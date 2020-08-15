@@ -21,9 +21,9 @@ jobs:
       - run: |
           xcrun simctl list -j | jq '.devices[][] | select(.isAvailable == true) | { (.name): .udid }' | jq -s add
       - run: |
-          xcrun simctl list -j | jq '.devices[][] | select(.isAvailable == true) | { (.name): .udid }' | jq -s add | jq -r '.["iPhone X"]' | tee udid
+          xcrun simctl list -j | jq '.devices[][] | select(.isAvailable == true) | { (.name): .udid }' | jq -s add | jq -r '.["iPhone 11"]' | tee udid
       - run: xcrun simctl boot $(cat udid)
-      - run: (sleep 3 && xcrun simctl openurl $(cat udid) http://127.0.0.1:9876) &
+      - run: xcrun simctl openurl $(cat udid) http://127.0.0.1:9876 &
       - run: yarn karma start --single-run --no-browsers
       - run: xcrun simctl io $(cat udid) screenshot ./screenshot.png
       - uses: actions/upload-artifact@v1
